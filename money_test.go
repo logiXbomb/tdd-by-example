@@ -6,7 +6,9 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-type Dollar struct{}
+type Dollar struct {
+	Amount int
+}
 
 func (d *Dollar) Times(_ int) {
 
