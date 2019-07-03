@@ -6,6 +6,10 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func NewDollar() {
+
+}
+
 func TestMoney(t *testing.T) {
 	t.Run("multiplication", func(t *testing.T) {
 		five := NewDollar(5)
