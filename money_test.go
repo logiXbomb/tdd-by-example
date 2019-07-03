@@ -6,8 +6,14 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func NewDollar(_ int) string {
-	return ""
+type Dollar struct{}
+
+func (d *Dollar) Times(_ int) {
+
+}
+
+func NewDollar(_ int) *Dollar {
+	return &Dollar{}
 }
 
 func TestMoney(t *testing.T) {
