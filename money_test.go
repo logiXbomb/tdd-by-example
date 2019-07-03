@@ -6,8 +6,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func NewDollar(_ int) {
-
+func NewDollar(_ int) string {
+	return ""
 }
 
 func TestMoney(t *testing.T) {
