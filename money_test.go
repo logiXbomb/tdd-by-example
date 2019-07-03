@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func NewDollar() {
+func NewDollar(_ int) {
 
 }
 
