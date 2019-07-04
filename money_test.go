@@ -14,6 +14,10 @@ func (d *Dollar) Times(multiplier int) *Dollar {
 	return NewDollar(d.Amount * multiplier)
 }
 
+func (d *Dollar) Equal(dollar *Dollar) bool {
+	return d.Amount == dollar.Amount
+}
+
 func NewDollar(amount int) *Dollar {
 	return &Dollar{
 		Amount: amount,
@@ -23,9 +27,12 @@ func NewDollar(amount int) *Dollar {
 func TestMoney(t *testing.T) {
 	t.Run("multiplication", func(t *testing.T) {
 		five := NewDollar(5)
-		product := five.Times(2)
-		assert.Equal(t, 10, product.Amount)
-		product = five.Times(3)
-		assert.Equal(t, 15, product.Amount)
+		assert.True(t, NewDollar(10).Equal(five.Times(2)))
+		assert.True(t, NewDollar(15).Equal(five.Times(3)))
+	})
+
+	t.Run("equality", func(t *testing.T) {
+		assert.True(t, NewDollar(5).Equal(NewDollar(5)))
+		assert.False(t, NewDollar(5).Equal(NewDollar(6)))
 	})
 }
