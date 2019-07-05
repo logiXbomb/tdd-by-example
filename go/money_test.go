@@ -6,33 +6,53 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-type Dollar struct {
-	Amount int
+const (
+	USD = iota
+	CHF
+)
+
+type Money struct {
+	Amount   int
+	Currency int
 }
 
-func (d *Dollar) Times(multiplier int) *Dollar {
-	return NewDollar(d.Amount * multiplier)
+func (m *Money) Equal(money *Money) bool {
+	return m.Currency == money.Currency && m.Amount == money.Amount
 }
 
-func (d *Dollar) Equal(dollar *Dollar) bool {
-	return d.Amount == dollar.Amount
+func (m *Money) Times(amount int) *Money {
+	return NewMoney(m.Amount*amount, m.Currency)
 }
 
-func NewDollar(amount int) *Dollar {
-	return &Dollar{
-		Amount: amount,
-	}
+func (m *Money) Plus(money *Money) *Money {
+	return NewMoney(m.Amount+money.Amount, m.Currency)
+}
+
+func NewMoney(amount int, currency int) *Money {
+	return &Money{amount, currency}
 }
 
 func TestMoney(t *testing.T) {
 	t.Run("multiplication", func(t *testing.T) {
-		five := NewDollar(5)
-		assert.True(t, NewDollar(10).Equal(five.Times(2)))
-		assert.True(t, NewDollar(15).Equal(five.Times(3)))
+		five := NewMoney(5, USD)
+		assert.True(t, NewMoney(10, USD).Equal(five.Times(2)))
+		assert.True(t, NewMoney(15, USD).Equal(five.Times(3)))
+	})
+
+	t.Run("multiplication in Francs", func(t *testing.T) {
+		five := NewMoney(5, CHF)
+		assert.True(t, NewMoney(10, CHF).Equal(five.Times(2)))
+		assert.True(t, NewMoney(15, CHF).Equal(five.Times(3)))
 	})
 
 	t.Run("equality", func(t *testing.T) {
-		assert.True(t, NewDollar(5).Equal(NewDollar(5)))
-		assert.False(t, NewDollar(5).Equal(NewDollar(6)))
+		assert.True(t, NewMoney(5, USD).Equal(NewMoney(5, USD)))
+		assert.False(t, NewMoney(5, USD).Equal(NewMoney(6, USD)))
+		assert.False(t, NewMoney(5, USD).Equal(NewMoney(5, CHF)))
+	})
+
+	t.Run("simple addition", func(t *testing.T) {
+		sum := NewMoney(5, USD).Plus(NewMoney(5, USD))
+		assert.Equal(t, NewMoney(10, USD), sum)
 	})
 }
